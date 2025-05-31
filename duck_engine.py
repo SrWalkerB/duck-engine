@@ -1,6 +1,7 @@
 import pygame
 from core.ecs_manager import EcsManager  
 from components.available_components import AvailableComponents
+from system.render_system import RenderSystem
 
 class DuckEngine:
     WIDTH_SCREEN = 1280
@@ -23,31 +24,26 @@ class DuckEngine:
         screen = pygame.display.set_mode((self.WIDTH_SCREEN, self.HEIGHT_SCREEN))
         clock = pygame.time.Clock()
         running = True
-
-        player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
-
-        self.component_list.append(player_pos)
+        render_system = RenderSystem(self.ecs_manager, screen)
 
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
 
-            screen.fill("purple")
 
-            pygame.draw.circle(screen, "red", player_pos, 40)
+            render_system.update(self.DELTA_TIME)
+            
+            # screen.fill("purple")
 
-            keys = pygame.key.get_pressed()
-            mouse_event_pressed = pygame.mouse.get_pressed()
+            # pygame.draw.circle(screen, "red", player_pos, 40)
 
-            if keys[pygame.K_w]:
-                player_pos.y -= 300 * self.DELTA_TIME
-            if keys[pygame.K_s]:
-                player_pos.y += 300 * self.DELTA_TIME
+            # keys = pygame.key.get_pressed()
 
-            if mouse_event_pressed[0] is True:
-                mouse = pygame.mouse.get_pos()
-                print(f'clic {mouse_event_pressed} - {mouse}')
+            # if keys[pygame.K_w]:
+            #     player_pos.y -= 300 * self.DELTA_TIME
+            # if keys[pygame.K_s]:
+            #     player_pos.y += 300 * self.DELTA_TIME
 
             pygame.display.flip()
 
