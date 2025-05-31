@@ -1,14 +1,10 @@
 from duck_engine import DuckEngine
-from core.entity_manager import EntityManager
+from core.ecs_manager import EcsManager
+from components.transform import Transform
 
-duckEngine = DuckEngine()
-entity_manager = EntityManager()
+duck_engine = DuckEngine()
 
-player_id = entity_manager.create_entity('player')
+player_id = duck_engine.ecs_manager.create_entity('Player', 'player')
+ground_id = duck_engine.ecs_manager.create_entity('Ground', '')
 
-print(player_id)
-# entity_manager.get_entity_list()
-
-
-
-# duckEngine.start_engine()
+duck_engine.ecs_manager.get_entity_list()

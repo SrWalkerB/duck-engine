@@ -1,4 +1,6 @@
 import pygame
+from core.ecs_manager import EcsManager  
+from components.available_components import AvailableComponents
 
 class DuckEngine:
     WIDTH_SCREEN = 1280
@@ -9,9 +11,15 @@ class DuckEngine:
 
     def __init__(self):
         self.running = True
+        self.ecs_manager = EcsManager()
+        self.available_components = AvailableComponents()
+
         pass
 
     def start_engine(self):
+        pass
+        
+    def start_game(self):
         screen = pygame.display.set_mode((self.WIDTH_SCREEN, self.HEIGHT_SCREEN))
         clock = pygame.time.Clock()
         running = True
