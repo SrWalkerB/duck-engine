@@ -51,29 +51,33 @@ class EcsManager:
 
         self.component_list[component][entity_id] = component_instance
 
-        print(f'{entity_id} {self.component_list[component]}')
-
     def get_component(self, entity_id, component_type):
         return self.component_list[component_type][entity_id]
 
     def get_entity_component(self, *component_types):
         entity_list = {}
-        component_types_match_list = {}
-
-        for component_type in component_types:
-            component_types_match_list[component_type] = False
 
         for entity_id in self.entity_list:
+            component_types_match_list = {}
+
+            for component_type in component_types:
+                component_types_match_list[component_type] = {}
+                component_types_match_list[component_type][entity_id] = False
+
             for component in self.component_list:
                 check_if_exist_component = len(self.component_list[component].values())
 
                 if check_if_exist_component != 0:
-                    if self.component_list[component][entity_id] is not None:
-                        component_types_match_list[component] = True
+                    if self.component_list[component].get(entity_id) is not None and self.component_list[component][entity_id] is not None:
+                        component_types_match_list[component][entity_id] = True
                         
-                    
 
-            if all(component_types_match_list.values()):
+            result_match = []
+
+            for company_type_match in component_types_match_list:
+                result_match.append(component_types_match_list[company_type_match][entity_id])
+
+            if all(result_match):
                 entity_list[entity_id] = entity_id
 
         return entity_list

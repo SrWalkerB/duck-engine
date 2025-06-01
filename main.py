@@ -8,7 +8,7 @@ player_id = duck_engine.ecs_manager.create_entity('Player', 'player')
 # ground_id = duck_engine.ecs_manager.create_entity('Ground')
 
 
-render_system = RenderSystem(duck_engine.ecs_manager)
+render_system = RenderSystem(duck_engine.ecs_manager, None)
 
 render_system.update(10)
 
