@@ -43,7 +43,7 @@ class DuckEngine:
         pass
 
     def start_main_loop(self):
-        render_system = RenderSystem(self.ecs_manager, self.screen)
+        render_system = RenderSystem(self.ecs_manager, self.screen, self.editor_gui)
         width, height = pygame.display.get_surface().get_size()
 
         imgui.get_io().display_size = (width, height)

@@ -20,7 +20,18 @@ class EditorGui:
                 imgui.end_menu()
             imgui.end_main_menu_bar()
 
-    def simple_gui(self, title: str, value: str):
+    def simple_gui(self, title: str, value_list: str):
         imgui.begin(title)
-        imgui.text(value)
+
+        for value in value_list:
+            imgui.text(value)
+
         imgui.end()
+
+    def slide_gui(self, current_value):
+        imgui.begin('Slider')
+
+        _, value = imgui.slider_float('Slider', current_value, 0.0, 1.0)
+
+        imgui.end()
+        return value

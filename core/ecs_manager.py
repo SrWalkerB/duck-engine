@@ -36,7 +36,7 @@ class EcsManager:
         if entity_data is None:
             return None
         
-        response = {}
+        response: EntityMetadata = {}
 
         response.update(entity_data.get_data())
 
