@@ -5,6 +5,18 @@ from components.transform import Transform
 from components.sprite import Sprite
 from OpenGL.GL import *
 
+# Basico Opengl,
+#            Y (1.0)
+#              ↑
+#              |
+#    (-1.0,1.0)| (1.0,1.0)
+# ─────────────┼─────────────→ X (1.0)
+#              |
+#    (-1.0,-1.0)| (1.0,-1.0)
+#              ↓
+#            Y (-1.0)
+
+
 class RenderSystem:
     def __init__(self, ecs_manager: EcsManager, screen: Surface):
         self.ecs_manager = ecs_manager
@@ -21,6 +33,15 @@ class RenderSystem:
         for entity_id in entity_list:
             transform: Transform = self.ecs_manager.get_component(entity_id, "Transform")
             sprite: Sprite = self.ecs_manager.get_component(entity_id, 'Sprite')
+
+            size = 0.1
+
+            glBegin(GL_QUADS)
+            glVertex2f(-size,  size)
+            glVertex2f( size,  size) 
+            glVertex2f( size, -size)
+            glVertex2f(-size, -size)
+            glEnd()
 
             # entity_pos = pygame.Vector2(transform.pos_x, transform.pos_y)
 
