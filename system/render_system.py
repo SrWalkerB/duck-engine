@@ -19,18 +19,22 @@ from editor.editor_gui import EditorGui
 
 
 class RenderSystem:
+    entity_list: []
+
+
     def __init__(self, ecs_manager: EcsManager, screen: Surface, guiSystem: EditorGui):
         self.ecs_manager = ecs_manager
         self.screen = screen
         self.guiSystem = guiSystem
         pass
 
-    def update(self, delta_time: float):
+    def process(self, delta_time: float):
         glClear(GL_COLOR_BUFFER_BIT)
         entity_list = self.ecs_manager.get_entity_component('Transform', 'Sprite')
+        
 
-        if len(entity_list) == 0:
-            print(f'Empty Entity With Transform and Sprite')
+        # if len(entity_list) == 0:
+        #     self.guiSystem.simple_gui('Entity List', [])
 
         for entity_id in entity_list:
             transform: Transform = self.ecs_manager.get_component(entity_id, "Transform")
@@ -47,12 +51,12 @@ class RenderSystem:
             pos_x_3 = pos_x
             pos_y_3 = pos_y+transform.scale_x
 
-            self.guiSystem.simple_gui('Entity List', [
-                f'[{entity_data["name"]}]',
-                f'pos_x = {pos_x}', f'pos_y = {pos_y}',
-                f'scale_x {transform.scale_x}, scale_y = {transform.scale_x}',
-                ''
-            ])
+            # self.guiSystem.simple_gui('Entity List', [
+            #     f'[{entity_data["name"]} ({entity_id})]',
+            #     f'pos_x = {pos_x}', f'pos_y = {pos_y}',
+            #     f'scale_x {transform.scale_x}, scale_y = {transform.scale_x}',
+            #     ''
+            # ])
 
             glBegin(GL_TRIANGLES)
             glVertex2f(pos_x, pos_y)
@@ -64,6 +68,8 @@ class RenderSystem:
 
             # if self.screen is not None:
             #     pygame.draw.circle(self.screen, sprite.color, entity_pos, 40)
+
+        self.guiSystem.entity_list()
 
 
         

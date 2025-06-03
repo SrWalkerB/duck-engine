@@ -1,5 +1,6 @@
 from game.entity_metadata import EntityMetadata
 from components.transform import Transform
+from components.sprite import Sprite
 from components.available_components import AvailableComponents
 
 class EcsManager:
@@ -11,6 +12,8 @@ class EcsManager:
         
         available_components_list = available_components.get_component_list()
 
+        self.entity_creation_queue = []
+
         for component in available_components_list:
             self.component_list[component] = {}
 
@@ -19,13 +22,13 @@ class EcsManager:
 
         self.entity_list[entity_id] = entity_id
         self.entity_metadata_list[entity_id] = EntityMetadata(entity_id, name, tag)
-        self.component_list["Transform"][entity_id] = Transform()
+        self.component_list["Transform"][entity_id] = Transform(0,0, 0.1, 0.1)
+        self.component_list["Sprite"][entity_id] = Sprite('red')
 
         return entity_id
 
     def get_entity_list(self):
-        for entity_item in self.entity_list:
-            print(f'{entity_item} - {self.entity_metadata_list[entity_item].name}')
+        return self.entity_list
 
     def count_entity_list(self):
         return len(self.entity_list)
@@ -40,6 +43,12 @@ class EcsManager:
 
         response.update(entity_data.get_data())
 
+        response['components'] = {}
+
+        for component in self.component_list:
+            check_component = self.component_list[component].get(entity_id)
+            response['components'][component] = check_component
+
         return response
     
     def add_component(self, entity_id: int, component: str, component_instance):
@@ -53,6 +62,17 @@ class EcsManager:
 
     def get_component(self, entity_id, component_type):
         return self.component_list[component_type][entity_id]
+    
+    def add_entity_creation(self, entity_name: str):
+        self.entity_creation_queue.append(entity_name)
+
+    def queue_entity_creation(self):
+        if len(self.entity_creation_queue):
+            print(f'Pending entity_creation_queue: {len(self.entity_creation_queue)}')
+
+        for entity in self.entity_creation_queue:
+            self.create_entity(entity)
+            self.entity_creation_queue.pop()
 
     def get_entity_component(self, *component_types):
         entity_list = {}
